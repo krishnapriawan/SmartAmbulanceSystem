@@ -1,0 +1,25 @@
+START [patientId,pick]
+
+	// Declaration of some constants
+	routeParamMsg = 1
+	patientDataParamMsg = 2
+	
+	getTrafficInfo = 1
+	acquireGPSLocation = 2
+
+		//pick = this.pickTask()
+		if (pick == routeParamMsg){
+			
+			data = this.getVitalParams()
+			analysisResult = RouteService.analyzeData(data)
+			
+			if (analysisResult == getTrafficInfo)
+				TrafficManagementService.getTrafficInfo(patientId)
+			else if (analysisResult == acquireGPSLocation)
+				LocationService.acquireGPSLocation(patientId)
+		}
+		else if (pick == patientDataParamMsg) {
+			
+		}
+
+RETURN
