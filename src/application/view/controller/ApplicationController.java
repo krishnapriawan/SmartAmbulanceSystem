@@ -109,7 +109,7 @@ public class ApplicationController implements Initializable {
     CompositeService compositeService;
     PatientServiceCostProbe probe;
     ServiceRegistry serviceRegistry;
-    SASStart tasStart;
+    SASStart sasStart;
 
     Set<Button> profileRuns = new HashSet<>();
     int maxSteps;
@@ -315,7 +315,7 @@ public class ApplicationController implements Initializable {
     }
     
     public void setSasStart(SASStart tasStart) {
-    	this.tasStart = tasStart;
+    	this.sasStart = tasStart;
       	chartController = new ChartController(reliabilityChartPane, costChartPane,performanceChartPane,invCostChartPane,
     			avgReliabilityChartPane, avgCostChartPane, avgPerformanceChartPane,invRateChartPane,tasStart.getServiceTypes());
     	tableViewController = new TableViewController(reliabilityTableView, costTableView,performanceTableView);
@@ -379,7 +379,7 @@ public class ApplicationController implements Initializable {
     		 public void handle(KeyEvent event){
     			if (event.getCode().equals(KeyCode.ENTER)){
     				//System.out.println(sliceTextField.getText());
-					chartController.generateAvgCharts(resultFilePath, tasStart.getCurrentSteps(),Integer.parseInt(sliceTextField.getText()));
+					chartController.generateAvgCharts(resultFilePath, sasStart.getCurrentSteps(),Integer.parseInt(sliceTextField.getText()));
     		    }
     		 }
     	});
@@ -537,8 +537,8 @@ public class ApplicationController implements Initializable {
     			}
     			br.close();
 
-    			chartController.generateCharts(resultFilePath, tasStart.getCurrentSteps());
-    			chartController.generateAvgCharts(resultFilePath, tasStart.getCurrentSteps(),Integer.parseInt(sliceTextField.getText()));
+    			chartController.generateCharts(resultFilePath, sasStart.getCurrentSteps());
+    			chartController.generateAvgCharts(resultFilePath, sasStart.getCurrentSteps(),Integer.parseInt(sliceTextField.getText()));
     			
     			tableViewController.fillReliabilityDate(file.getPath());
     			tableViewController.fillCostData(file.getPath());
@@ -687,7 +687,7 @@ public class ApplicationController implements Initializable {
     		    if (file != null) {
     		    	    		        		    	
     		    	List<String> services=new ArrayList<>();
-    		    	for(String serviceName:tasStart.getServiceTypes().keySet())
+    		    	for(String serviceName:sasStart.getServiceTypes().keySet())
     		    		services.add(serviceName);
     		    	
     				FileManager writer=new FileManager(file.getPath()+".csv");
@@ -964,7 +964,7 @@ public class ApplicationController implements Initializable {
 
     				    //System.out.println("Before executing workflow!!");
 
-    				    tasStart.executeWorkflow(workflowPath, path);
+    				    sasStart.executeWorkflow(workflowPath, path);
 
     				    //System.out.println("Finish executing workflow!!");
 
@@ -980,8 +980,8 @@ public class ApplicationController implements Initializable {
         						chartController.clear();
         						tableViewController.clear();
         						
-        						chartController.generateCharts(resultFilePath, tasStart.getCurrentSteps());
-        						chartController.generateAvgCharts(resultFilePath, tasStart.getCurrentSteps(),Integer.parseInt(sliceTextField.getText()));
+        						chartController.generateCharts(resultFilePath, sasStart.getCurrentSteps());
+        						chartController.generateAvgCharts(resultFilePath, sasStart.getCurrentSteps(),Integer.parseInt(sliceTextField.getText()));
 
         					    tableViewController.fillReliabilityDate(resultFilePath);
         					    tableViewController.fillCostData(resultFilePath);
@@ -1040,7 +1040,7 @@ public class ApplicationController implements Initializable {
     				 adaptationEngines.get(preAdaptation).stop();
     			    preAdaptation=null;
     			    
-    	    	tasStart.stop();
+    	    	sasStart.stop();
     	    	//tasStart.pause();
     	    				
     		    Platform.runLater(new Runnable() {
@@ -1051,8 +1051,8 @@ public class ApplicationController implements Initializable {
     				chartController.clear();
     				tableViewController.clear();
     				
-    				chartController.generateCharts(resultFilePath, tasStart.getCurrentSteps());
-    				chartController.generateAvgCharts(resultFilePath, tasStart.getCurrentSteps(),Integer.parseInt(sliceTextField.getText()));
+    				chartController.generateCharts(resultFilePath, sasStart.getCurrentSteps());
+    				chartController.generateAvgCharts(resultFilePath, sasStart.getCurrentSteps(),Integer.parseInt(sliceTextField.getText()));
 
     			    tableViewController.fillReliabilityDate(resultFilePath);
     			    tableViewController.fillCostData(resultFilePath);
@@ -1097,8 +1097,8 @@ public class ApplicationController implements Initializable {
         	    
         		ServiceProfileController controller=(ServiceProfileController)loader.getController();
         		controller.setStage(dialogStage);
-        		controller.setServiceProfileClasses(tasStart.getServiceProfileClasses());
-        		controller.setService(tasStart.getService(serviceName));
+        		controller.setServiceProfileClasses(sasStart.getServiceProfileClasses());
+        		controller.setService(sasStart.getService(serviceName));
 
         	    Scene dialogScene = new Scene(pane);
         	    dialogScene.getStylesheets().add(MainGui.class.getResource("view/application.css").toExternalForm());

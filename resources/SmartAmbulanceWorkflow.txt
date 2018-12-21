@@ -6,11 +6,14 @@ START [patientId,pick]
 	
 	getTrafficInfo = 1
 	acquireGPSLocation = 2
+	
+	getSensorData = 1
+	getMedicalRecordData = 2
 
-		//pick = this.pickTask()
+		pick = this.pickTask()
 		if (pick == routeParamMsg){
 			
-			data = this.getVitalParams()
+			data = this.getRouteData()
 			analysisResult = RouteService.analyzeData(data)
 			
 			if (analysisResult == getTrafficInfo)
@@ -19,7 +22,12 @@ START [patientId,pick]
 				LocationService.acquireGPSLocation(patientId)
 		}
 		else if (pick == patientDataParamMsg) {
+			patientDataResult = this.analyzePatientData()
 			
+			if (patientDataResult == getSensorData) 
+				PatientSensorService.fetchData(patientId)
+			else if (patientDataResult == getMedicalRecordData) 
+				MedicalRecordService.fetchData(patientId)
 		}
 
 RETURN
